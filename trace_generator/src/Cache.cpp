@@ -1,4 +1,5 @@
 #include "Cache.h"
+using namespace std;
 
 Cache::Cache(int size, int assoc, int block_size,
     Level level):

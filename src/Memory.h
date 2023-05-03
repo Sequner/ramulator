@@ -1,6 +1,7 @@
 #ifndef __MEMORY_H
 #define __MEMORY_H
 
+#include "MCCache.h"
 #include "Config.h"
 #include "DRAM.h"
 #include "Request.h"
@@ -101,6 +102,8 @@ public:
     string mapping_file;
     bool use_mapping_file;
     bool dump_mapping;
+
+    MCCache* cache = NULL;
     
     int tx_bits;
 
@@ -153,6 +156,10 @@ public:
           free_physical_pages_remaining = max_address >> 12;
 
           free_physical_pages.resize(free_physical_pages_remaining, -1);
+        }
+
+        if (configs.has_mc_cache()) {
+            cache = new MCCache(mccache_size, mccache_assoc, mccache_blocksz, 16, ctrls.size());
         }
 
         dram_capacity
@@ -261,6 +268,7 @@ public:
         for (auto ctrl: ctrls)
             delete ctrl;
         delete spec;
+        delete cache;
     }
 
     double clk_ns()
@@ -284,6 +292,7 @@ public:
         int cur_que_req_num = 0;
         int cur_que_readreq_num = 0;
         int cur_que_writereq_num = 0;
+        sendCtrls();
         for (auto ctrl : ctrls) {
           cur_que_req_num += ctrl->readq.size() + ctrl->writeq.size() + ctrl->pending.size();
           cur_que_readreq_num += ctrl->readq.size() + ctrl->pending.size();
@@ -303,50 +312,80 @@ public:
         }
     }
 
-    bool send(Request req)
-    {
-        req.addr_vec.resize(addr_bits.size());
-        long addr = req.addr;
-        int coreid = req.coreid;
+    void preprocess(Request* req) {
+        req->addr_vec.resize(addr_bits.size());
+        long addr = req->addr;
 
         // Each transaction size is 2^tx_bits, so first clear the lowest tx_bits bits
         clear_lower_bits(addr, tx_bits);
 
         if (use_mapping_file){
-            apply_mapping(addr, req.addr_vec);
+            apply_mapping(addr, req->addr_vec);
         }
         else {
             switch(int(type)){
                 case int(Type::ChRaBaRoCo):
                     for (int i = addr_bits.size() - 1; i >= 0; i--)
-                        req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
+                        req->addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
                     break;
                 case int(Type::RoBaRaCoCh):
-                    req.addr_vec[0] = slice_lower_bits(addr, addr_bits[0]);
-                    req.addr_vec[addr_bits.size() - 1] = slice_lower_bits(addr, addr_bits[addr_bits.size() - 1]);
+                    req->addr_vec[0] = slice_lower_bits(addr, addr_bits[0]);
+                    req->addr_vec[addr_bits.size() - 1] = slice_lower_bits(addr, addr_bits[addr_bits.size() - 1]);
                     for (int i = 1; i <= int(T::Level::Row); i++)
-                        req.addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
+                        req->addr_vec[i] = slice_lower_bits(addr, addr_bits[i]);
                     break;
                 default:
                     assert(false);
             }
         }
+    }
 
-        if(ctrls[req.addr_vec[0]]->enqueue(req)) {
-            // tally stats here to avoid double counting for requests that aren't enqueued
-            ++num_incoming_requests;
-            if (req.type == Request::Type::READ) {
+    // ideally put everything to ctrls
+    bool send(Request req)
+    {
+        preprocess(&req);
+        // if other type of request, send2
+        if ((req.type != Request::Type::READ) && (req.type != Request::Type::WRITE)) {
+            if(ctrls[req.addr_vec[0]]->enqueue(req)) {
+                ++num_incoming_requests;
+                ++incoming_requests_per_channel[req.addr_vec[int(T::Level::Channel)]];
+                return true;
+            }
+            return false;
+        }
+        
+        Queue& queue = ctrls[req.addr_vec[0]].get_queue(req.type);
+        if (queue.max == queue.size())
+            return false;
+        int coreid = req.coreid;
+        ++num_incoming_requests;
+        if (req.type == Request::Type::READ) {
               ++num_read_requests[coreid];
               ++incoming_read_reqs_per_channel[req.addr_vec[int(T::Level::Channel)]];
-            }
-            if (req.type == Request::Type::WRITE) {
-              ++num_write_requests[coreid];
-            }
-            ++incoming_requests_per_channel[req.addr_vec[int(T::Level::Channel)]];
-            return true;
         }
+        if (req.type == Request::Type::WRITE) {
+            ++num_write_requests[coreid];
+        }
+        
+        req.arrive = num_dram_cycles;
+        if (cache != NULL)
+            return cache.send(req);
+        return ioenqueue(req);
+    }
 
-        return false;
+    void sendCtrls()
+    {
+        for (int i = 0; i < cache->ld_wait_list; i++) {
+            std::list<std::pair<long, Request> > list = cache->ld_wait_list[i];
+            auto it = list.begin();
+            while (it != list.end() && num_dram_cycles >= it->first) {
+                ctrls[i].ioenqueue(it->second);
+            }
+        }
+        if (req.type == Request::Type::WRITE) {
+            preprocess(&req);
+            req.arrive = num_dram_cycles;
+        }
     }
     
     void init_mapping_with_file(string filename){
@@ -602,6 +641,11 @@ private:
 
         return rand();
     }
+
+    int mccache_size = 1 << 23;
+    int mccache_assoc = 1 << 3;
+    int mccache_blocksz = 1 << 6;
+    int mshr_per_bank = 16;
 };
 
 } /*namespace ramulator*/

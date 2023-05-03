@@ -1,0 +1,385 @@
+Command-line: "Simpoint3.2/bin/simpoint -maxK 30 -saveSimpoints temp-tg3142438/tg3142438.pts -saveSimpointWeights temp-tg3142438/tg3142438.w -saveLabels temp-tg3142438/tg3142438.lbl -loadFVFile temp-tg3142438/tg3142438.T.0.bb"
+Using these options (*** indicates user-specified option):
+*** -loadFVFile : temp-tg3142438/tg3142438.T.0.bb
+    -k : search
+    -iters : 100
+    -dim : 15
+*** -maxK : 30
+    -numInitSeeds : 5
+    -coveragePct : 1
+    -bicThreshold : 0.9
+    -saveAll : false
+    -initkm : samp
+*** -saveLabels : temp-tg3142438/tg3142438.lbl
+*** -saveSimpoints : temp-tg3142438/tg3142438.pts
+*** -saveSimpointWeights : temp-tg3142438/tg3142438.w
+    -saveVectorWeights : 
+    -saveInitCtrs : 
+    -saveFinalCtrs : 
+    -saveVectorsTxtFmt : 
+    -saveVectorsBinFmt : 
+    -saveProjMatrixTxtFmt : 
+    -saveProjMatrixBinFmt : 
+    -loadVectorsTxtFmt : 
+    -loadVectorsBinFmt : 
+    -loadProjMatrixTxtFmt : 
+    -loadProjMatrixBinFmt : 
+    -loadInitCtrs : 
+    -loadInitLabels : 
+    -loadVectorWeights : 
+    -inputVectorsGzipped : false
+    -fixedLength : on
+    -numFVs : -1
+    -FVDim : -1
+    -sampleSize : -1
+    -seedkm : 493575226
+    -seedproj : 2042712918
+    -seedsample : 385089224
+    -verbose : 0
+-------------------------------------------------------------
+  Loading data from frequency vector file 'temp-tg3142438/tg3142438.T.0.bb' (size: 99x7489)
+  Created random projection matrix (size: 7489x15)
+  Loaded and projected frequency vector file
+  Applying fixed-length vector weights (uniform weights)
+  Searching for best clustering for k <= 30
+
+--------------------------------------------------------------
+Run number 1 of at most 7, k = 1
+--------------------------------------------------------------
+  --------------------------------------------------------------
+  Initialization seed trial #1 of 5; initialization seed = 493575226
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 1 centers
+  Number of k-means iterations performed: 1
+  BIC score: 1108.7
+  Distortion: 18.5893
+  Distortions/cluster: 18.5893 
+  Variance: 0.189686
+  Variances/cluster: 0.189686 
+  --------------------------------------------------------------
+  Initialization seed trial #2 of 5; initialization seed = 493575227
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 1 centers
+  Number of k-means iterations performed: 1
+  BIC score: 1108.7
+  Distortion: 18.5893
+  Distortions/cluster: 18.5893 
+  Variance: 0.189686
+  Variances/cluster: 0.189686 
+  --------------------------------------------------------------
+  Initialization seed trial #3 of 5; initialization seed = 493575228
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 1 centers
+  Number of k-means iterations performed: 1
+  BIC score: 1108.7
+  Distortion: 18.5893
+  Distortions/cluster: 18.5893 
+  Variance: 0.189686
+  Variances/cluster: 0.189686 
+  --------------------------------------------------------------
+  Initialization seed trial #4 of 5; initialization seed = 493575229
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 1 centers
+  Number of k-means iterations performed: 1
+  BIC score: 1108.7
+  Distortion: 18.5893
+  Distortions/cluster: 18.5893 
+  Variance: 0.189686
+  Variances/cluster: 0.189686 
+  --------------------------------------------------------------
+  Initialization seed trial #5 of 5; initialization seed = 493575230
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 1 centers
+  Number of k-means iterations performed: 1
+  BIC score: 1108.7
+  Distortion: 18.5893
+  Distortions/cluster: 18.5893 
+  Variance: 0.189686
+  Variances/cluster: 0.189686 
+  The best initialization seed trial was #1
+
+--------------------------------------------------------------
+Run number 2 of at most 7, k = 30
+--------------------------------------------------------------
+  --------------------------------------------------------------
+  Initialization seed trial #1 of 5; initialization seed = 493575231
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 30 centers
+  Number of k-means iterations performed: 4
+  BIC score: 1709.88
+  Distortion: 1.29493
+  Distortions/cluster: 0.000676943 0.00760597 0.0191723 0.290472 0.0219345 0.0358296 0.00331751 0.0235827 0.058896 0.196589 0.0424533 0.0140429 0.124442 0.00114657 0.013124 0.138099 0.0312947 0 4.0926e-33 0.00692926 0 4.81482e-35 0 3.27408e-33 4.81482e-35 0.0193973 0.124132 0.000532188 0.0714801 0.049782 
+  Variance: 0.0187671
+  Variances/cluster: 0.000338471 0.00760597 0.00958613 0.041496 0.00731149 0.0358296 0.00110584 0.00786089 0.029448 0.0196589 0.0424533 0.00702145 0.0311105 0.000229313 0.003281 0.0345249 0.0312947 0 0 0.00692926 0 0 0 0 0 0.00969865 0.0413773 0.000532188 0.0238267 0.008297 
+  --------------------------------------------------------------
+  Initialization seed trial #2 of 5; initialization seed = 493575232
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 30 centers
+  Number of k-means iterations performed: 4
+  BIC score: 1621.05
+  Distortion: 1.46109
+  Distortions/cluster: 7.70372e-34 0.0339461 0.084615 4.81482e-35 0.00738659 0.0518044 0.0242399 0.195243 2.40741e-34 0.00812161 0.00640359 0.107773 3.85186e-34 0.100939 0.0219345 0 0.019834 0.0203155 1.02315e-33 0.0461414 0.326772 0.0869271 0.0235827 0.0822097 0.0918621 0.116275 0 2.40741e-35 6.25927e-34 0.00476474 
+  Variance: 0.0211752
+  Variances/cluster: 0 0.00565768 0.0105769 0 0.00369329 0.0518044 0.0242399 0.0390486 0 0.00406081 0.0032018 0.0359242 0 0.0201877 0.00731149 0 0.00283343 0.0101577 0 0.0153805 0.326772 0.0144878 0.00786089 0.0411048 0.0229655 0.0387585 0 0 0 0.00238237 
+  --------------------------------------------------------------
+  Initialization seed trial #3 of 5; initialization seed = 493575233
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 30 centers
+  Number of k-means iterations performed: 3
+  BIC score: 1574.81
+  Distortion: 1.56459
+  Distortions/cluster: 6.01853e-36 0.124442 0.157831 2.40741e-34 1.02315e-33 0.0219345 6.01853e-35 0.0509069 0.081106 0.0869271 0.058896 0.0220806 0 0.00692926 0.00898544 0.0681018 3.29212e-05 0.216273 0 7.82409e-34 0.00823137 6.25927e-34 0.00331751 0.0714801 0.326772 0.00640359 0.0424533 0.169517 0.0312947 0.000676943 
+  Variance: 0.0226753
+  Variances/cluster: 0 0.0311105 0.0263051 0 0 0.00731149 0 0.00727241 0.040553 0.0144878 0.029448 0.00736019 0 0.00692926 0.00449272 0.0227006 3.29212e-05 0.0166364 0 0 0.00823137 0 0.00110584 0.0238267 0.326772 0.0032018 0.0424533 0.0423793 0.0312947 0.000338471 
+  --------------------------------------------------------------
+  Initialization seed trial #4 of 5; initialization seed = 493575234
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 30 centers
+  Number of k-means iterations performed: 3
+  BIC score: 1713.29
+  Distortion: 1.30324
+  Distortions/cluster: 0.0130725 0.100939 0.00128444 0.326772 0.0363071 0.00114657 0.0714801 0 0.21888 0.0203155 0.0191723 4.62223e-33 0.00609815 0.0839273 4.0926e-33 0.0176318 2.40741e-34 0 0.107773 0.0183361 0 4.81482e-35 0.0242399 0.129172 0.0339461 0.0461414 0 9.75002e-34 0.0266018 7.82409e-34 
+  Variance: 0.0188875
+  Variances/cluster: 0.0043575 0.0201877 0.00128444 0.326772 0.0181535 0.000229313 0.0238267 0 0.01824 0.0101577 0.00958613 0 0.00609815 0.0139879 0 0.0176318 0 0 0.0359242 0.00916807 0 0 0.0242399 0.0322931 0.00565768 0.0153805 0 0 0.00332522 0 
+  --------------------------------------------------------------
+  Initialization seed trial #5 of 5; initialization seed = 493575235
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 30 centers
+  Number of k-means iterations performed: 5
+  BIC score: 1548.24
+  Distortion: 1.62088
+  Distortions/cluster: 0.152525 0.124132 0.0205439 0.000499844 0.000324046 9.75002e-34 0.043465 0.170578 0.000321891 4.0926e-33 4.81482e-35 0.0219345 0.0822097 0.0159431 4.81482e-35 0.0461414 1.08334e-34 1.02315e-33 0.0203155 0.000532188 0.0358296 0.00961977 0.326772 0 0.0714801 0.107773 0 0.345291 0.0242399 0.00040434 
+  Variance: 0.0234909
+  Variances/cluster: 0.030505 0.0413773 0.00513597 0.000249922 0.000162023 0 0.0144883 0.0142148 0.000321891 0 0 0.00731149 0.0411048 0.00531436 0 0.0153805 0 0 0.0101577 0.000532188 0.0358296 0.0016033 0.326772 0 0.0238267 0.0359242 0 0.0383657 0.0242399 0.00040434 
+  The best initialization seed trial was #4
+
+--------------------------------------------------------------
+Run number 3 of at most 7, k = 15
+--------------------------------------------------------------
+  --------------------------------------------------------------
+  Initialization seed trial #1 of 5; initialization seed = 493575236
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 15 centers
+  Number of k-means iterations performed: 5
+  BIC score: 1858.47
+  Distortion: 2.46103
+  Distortions/cluster: 0.385007 0.0668912 0.0461414 0.326772 0.0810953 0.0681018 0.883432 0.0172689 0.0423687 0.0443078 0.107773 0.0822097 0.124132 0.184384 0.00114657 
+  Variance: 0.029298
+  Variances/cluster: 0.0427786 0.0668912 0.0153805 0.326772 0.011585 0.0227006 0.0353373 0.00345377 0.0423687 0.0147693 0.0359242 0.0411048 0.0413773 0.0141834 0.000229313 
+  --------------------------------------------------------------
+  Initialization seed trial #2 of 5; initialization seed = 493575237
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 15 centers
+  Number of k-means iterations performed: 5
+  BIC score: 1784.43
+  Distortion: 2.70818
+  Distortions/cluster: 0 0.326772 0.0242399 0.0822097 0.0386119 0.124132 0.0869271 7.82409e-34 0.0461414 0.0266018 0.0511854 0.715741 0.490547 0.304731 0.390337 
+  Variance: 0.0322402
+  Variances/cluster: 0 0.326772 0.0242399 0.0411048 0.00772239 0.0413773 0.0144878 0 0.0153805 0.00332522 0.0127964 0.0596451 0.0272526 0.0253942 0.0433707 
+  --------------------------------------------------------------
+  Initialization seed trial #3 of 5; initialization seed = 493575238
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 15 centers
+  Number of k-means iterations performed: 6
+  BIC score: 1884.65
+  Distortion: 2.36085
+  Distortions/cluster: 0.0869271 0.252593 0.124132 0.304731 0.0822097 0.0203155 0.0840914 0.399135 9.75002e-34 0.0461414 0.173107 0.326772 0.0267867 0.326138 0.107773 
+  Variance: 0.0281054
+  Variances/cluster: 0.0144878 0.0252593 0.0413773 0.0253942 0.0411048 0.0101577 0.0210229 0.0443484 0 0.0153805 0.0346215 0.326772 0.00892891 0.0155304 0.0359242 
+  --------------------------------------------------------------
+  Initialization seed trial #4 of 5; initialization seed = 493575239
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 15 centers
+  Number of k-means iterations performed: 5
+  BIC score: 1766.06
+  Distortion: 2.772
+  Distortions/cluster: 0.0461414 0.353763 7.82409e-34 0.181896 0.615034 0.0869271 0.0822097 0 0.0348219 0.188386 0.124132 0.0571665 0.674429 0.000321891 0.326772 
+  Variance: 0.033
+  Variances/cluster: 0.0153805 0.0235842 0 0.0202107 0.0559121 0.0144878 0.0411048 0 0.017411 0.0209317 0.0413773 0.00519696 0.0613117 0.000321891 0.326772 
+  --------------------------------------------------------------
+  Initialization seed trial #5 of 5; initialization seed = 493575240
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 15 centers
+  Number of k-means iterations performed: 5
+  BIC score: 1816.95
+  Distortion: 2.57721
+  Distortions/cluster: 0.130738 0.601547 0.105164 0.0339461 0.0869271 0.0219345 0.195243 0.167986 0.326772 0.166292 0.0203155 0.124132 0.488442 0.107773 6.25927e-34 
+  Variance: 0.0306811
+  Variances/cluster: 0.00817114 0.0316603 0.0262911 0.00565768 0.0144878 0.00731149 0.0390486 0.0419965 0.326772 0.0277153 0.0101577 0.0413773 0.0814069 0.0359242 0 
+  The best initialization seed trial was #3
+
+--------------------------------------------------------------
+Run number 4 of at most 7, k = 8
+--------------------------------------------------------------
+  --------------------------------------------------------------
+  Initialization seed trial #1 of 5; initialization seed = 493575241
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 8 centers
+  Number of k-means iterations performed: 4
+  BIC score: 1496.87
+  Distortion: 6.25856
+  Distortions/cluster: 0.100939 0 0.488442 0.0339461 0.0869271 2.85109 0.326138 2.37107 
+  Variance: 0.0687754
+  Variances/cluster: 0.0201877 0 0.0814069 0.00565768 0.0144878 0.570219 0.0155304 0.0564541 
+  --------------------------------------------------------------
+  Initialization seed trial #2 of 5; initialization seed = 493575242
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 8 centers
+  Number of k-means iterations performed: 6
+  BIC score: 1506.4
+  Distortion: 5.99401
+  Distortions/cluster: 1.40499 0.053973 0.488442 0.0869271 2.85109 0.549977 0.178553 0.380053 
+  Variance: 0.0658682
+  Variances/cluster: 0.0484479 0.0269865 0.0814069 0.0144878 0.570219 0.0458314 0.00991962 0.0292349 
+  --------------------------------------------------------------
+  Initialization seed trial #3 of 5; initialization seed = 493575243
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 8 centers
+  Number of k-means iterations performed: 6
+  BIC score: 1498.15
+  Distortion: 5.99458
+  Distortions/cluster: 1.23122 0.488442 2.85109 0.0869271 0.380053 0.592909 0.172725 0.19121 
+  Variance: 0.0658745
+  Variances/cluster: 0.0456006 0.0814069 0.570219 0.0144878 0.0292349 0.0456084 0.0157022 0.019121 
+  --------------------------------------------------------------
+  Initialization seed trial #4 of 5; initialization seed = 493575244
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 8 centers
+  Number of k-means iterations performed: 4
+  BIC score: 1254.42
+  Distortion: 8.64606
+  Distortions/cluster: 3.29212e-05 0.493407 0.380053 0.488442 5.50625 1.39929 0.326772 0.0518044 
+  Variance: 0.0950116
+  Variances/cluster: 3.29212e-05 0.0493407 0.0292349 0.0814069 0.189871 0.0466431 0.326772 0.0518044 
+  --------------------------------------------------------------
+  Initialization seed trial #5 of 5; initialization seed = 493575245
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 8 centers
+  Number of k-means iterations performed: 5
+  BIC score: 1631.03
+  Distortion: 5.20106
+  Distortions/cluster: 0.823492 0.166292 0.0869271 0.326138 3.35529 0.0339461 0.326772 0.0822097 
+  Variance: 0.0571545
+  Variances/cluster: 0.0914991 0.0277153 0.0144878 0.0155304 0.0838822 0.00565768 0.326772 0.0411048 
+  The best initialization seed trial was #5
+
+--------------------------------------------------------------
+Run number 5 of at most 7, k = 11
+--------------------------------------------------------------
+  --------------------------------------------------------------
+  Initialization seed trial #1 of 5; initialization seed = 493575246
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 11 centers
+  Number of k-means iterations performed: 5
+  BIC score: 1409.12
+  Distortion: 5.91262
+  Distortions/cluster: 0.000324046 0.0714801 4.0926e-33 7.82409e-34 0.488442 1.87992 0.326138 0.000499844 2.85109 0.259899 0.0348219 
+  Variance: 0.0671888
+  Variances/cluster: 0.000162023 0.0238267 0 0 0.0814069 0.0508086 0.0155304 0.000249922 0.570219 0.0259899 0.017411 
+  --------------------------------------------------------------
+  Initialization seed trial #2 of 5; initialization seed = 493575247
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 11 centers
+  Number of k-means iterations performed: 8
+  BIC score: 1744.27
+  Distortion: 3.6377
+  Distortions/cluster: 0.0339461 0.0822097 0.0869271 0.162917 0.326772 0.299445 1.04207 0.0242399 0.124132 1.35765 0.0973918 
+  Variance: 0.0413375
+  Variances/cluster: 0.00565768 0.0411048 0.0144878 0.0162917 0.326772 0.0427779 0.0694716 0.0242399 0.0413773 0.0484875 0.0108213 
+  --------------------------------------------------------------
+  Initialization seed trial #3 of 5; initialization seed = 493575248
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 11 centers
+  Number of k-means iterations performed: 5
+  BIC score: 1813.39
+  Distortion: 3.22845
+  Distortions/cluster: 0.326772 0.340391 0.494777 0.170309 0.266185 0.0571665 0.0869271 0.488442 0.691458 0.181896 0.124132 
+  Variance: 0.036687
+  Variances/cluster: 0.326772 0.0226927 0.0549752 0.0189232 0.0380264 0.00519696 0.0144878 0.0814069 0.0576215 0.0202107 0.0413773 
+  --------------------------------------------------------------
+  Initialization seed trial #4 of 5; initialization seed = 493575249
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 11 centers
+  Number of k-means iterations performed: 4
+  BIC score: 1640.14
+  Distortion: 4.17792
+  Distortions/cluster: 3.85186e-34 0.214489 1.75199 0.124132 0.518167 0.494777 0.326772 0.609564 4.81482e-35 0.0869271 0.0511031 
+  Variance: 0.0474764
+  Variances/cluster: 0 0.017874 0.0922099 0.0413773 0.0304804 0.0549752 0.326772 0.0468896 0 0.0144878 0.00638789 
+  --------------------------------------------------------------
+  Initialization seed trial #5 of 5; initialization seed = 493575250
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 11 centers
+  Number of k-means iterations performed: 4
+  BIC score: 1864.75
+  Distortion: 3.1016
+  Distortions/cluster: 0.124132 7.82409e-34 0.0461414 0.628978 0.304731 0.0869271 0.0822097 0.326138 0.26933 0.906238 0.326772 
+  Variance: 0.0352454
+  Variances/cluster: 0.0413773 0 0.0153805 0.0628978 0.0253942 0.0144878 0.0411048 0.0155304 0.0336663 0.0411926 0.326772 
+  The best initialization seed trial was #5
+
+--------------------------------------------------------------
+Run number 6 of at most 7, k = 9
+--------------------------------------------------------------
+  --------------------------------------------------------------
+  Initialization seed trial #1 of 5; initialization seed = 493575251
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 9 centers
+  Number of k-means iterations performed: 9
+  BIC score: 1842.62
+  Distortion: 3.61478
+  Distortions/cluster: 0.124132 0.326138 7.82409e-34 0.778659 0.488442 0.326772 0.0869271 1.10366 0.380053 
+  Variance: 0.0401643
+  Variances/cluster: 0.0413773 0.0155304 0 0.0409821 0.0814069 0.326772 0.0144878 0.0525553 0.0292349 
+  --------------------------------------------------------------
+  Initialization seed trial #2 of 5; initialization seed = 493575252
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 9 centers
+  Number of k-means iterations performed: 3
+  BIC score: 1387.99
+  Distortion: 6.89137
+  Distortions/cluster: 0.680483 0.124132 5.22416 0.488442 0.142567 0.230765 0.000324046 0.000499844 4.0926e-33 
+  Variance: 0.0765708
+  Variances/cluster: 0.0425302 0.0413773 0.130604 0.0814069 0.142567 0.0115383 0.000162023 0.000249922 0 
+  --------------------------------------------------------------
+  Initialization seed trial #3 of 5; initialization seed = 493575253
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 9 centers
+  Number of k-means iterations performed: 4
+  BIC score: 1842.7
+  Distortion: 3.59714
+  Distortions/cluster: 0.592909 0.124132 0.417611 0.326138 1.33571 0.0869271 0.0822097 0.326772 0.304731 
+  Variance: 0.0399682
+  Variances/cluster: 0.0456084 0.0413773 0.0596587 0.0155304 0.0534283 0.0144878 0.0411048 0.326772 0.0253942 
+  --------------------------------------------------------------
+  Initialization seed trial #4 of 5; initialization seed = 493575254
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 9 centers
+  Number of k-means iterations performed: 4
+  BIC score: 1805.56
+  Distortion: 3.89672
+  Distortions/cluster: 2.37107 0.152525 0.0869271 0.00476533 0.326138 0.488442 0.0159431 0.326772 0.124132 
+  Variance: 0.0432969
+  Variances/cluster: 0.0564541 0.030505 0.0144878 0.00158844 0.0155304 0.0814069 0.00531436 0.326772 0.0413773 
+  --------------------------------------------------------------
+  Initialization seed trial #5 of 5; initialization seed = 493575255
+  --------------------------------------------------------------
+  Initialized k-means centers using random sampling: 9 centers
+  Number of k-means iterations performed: 6
+  BIC score: 1839.29
+  Distortion: 3.60155
+  Distortions/cluster: 0.0869271 1.05227 0.488442 0.326138 0.124132 0.304731 0.611847 0.280286 0.326772 
+  Variance: 0.0400172
+  Variances/cluster: 0.0144878 0.0438447 0.0814069 0.0155304 0.0413773 0.0253942 0.0470652 0.0700715 0.326772 
+  The best initialization seed trial was #3
+
+------------------------------------------------------------------
+------------------------------------------------------------------
+Post-processing runs
+------------------------------------------------------------------
+------------------------------------------------------------------
+  For the BIC threshold, the best clustering was run 6 (k = 9)
+  Post-processing run 6 (k = 9)
+    Saving labels and distance from center of each input vector to file 'temp-tg3142438/tg3142438.lbl'
+    Saving simpoints of all non-empty clusters to file 'temp-tg3142438/tg3142438.pts'
+    Saving weights of all non-empty clusters to file 'temp-tg3142438/tg3142438.w'

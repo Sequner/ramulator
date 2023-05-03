@@ -77,7 +77,7 @@ public:
 
     struct Queue {
         list<Request> q;
-        unsigned int max = 32;
+        unsigned int max = 64;
         unsigned int size() {return q.size();}
     };
 
@@ -315,8 +315,18 @@ public:
         Queue& queue = get_queue(req.type);
         if (queue.max == queue.size())
             return false;
-
+        // if (req.type == Request::Type::READ)
+	    //     cout << "Arrived " << req.addr << " at clk " << clk << " queue size " << queue.size() << "/" << queue.max << "\n";
         req.arrive = clk;
+        queue.q.push_back(req);
+        return true;
+    }
+
+    // enqueue for read and write
+    // arrival clk and max size are checked at memory.h
+    bool ioenqueue(Request& req)
+    {
+        Queue& queue = get_queue(req.type);
         queue.q.push_back(req);
         // shortcut for read requests, if a write to same addr exists
         // necessary for coherence

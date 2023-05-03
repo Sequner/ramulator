@@ -63,10 +63,18 @@ public:
     long get_expected_limit_insts() const {return expected_limit_insts;}
     long get_warmup_insts() const {return warmup_insts;}
 
+    bool has_mc_cache() const {
+      if (options.find("cache") != options.end()) {
+        const std::string& cache_option = (options.find("cache"))->second;
+        return (cache_option == "MC") || (cache_option == "L3MC");
+      } else {
+        return false;
+      }
+    }
     bool has_l3_cache() const {
       if (options.find("cache") != options.end()) {
         const std::string& cache_option = (options.find("cache"))->second;
-        return (cache_option == "all") || (cache_option == "L3");
+        return (cache_option == "all") || (cache_option == "L3") || (cache_option == "L3MC");
       } else {
         return false;
       }

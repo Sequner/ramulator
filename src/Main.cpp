@@ -5,6 +5,7 @@
 #include "Memory.h"
 #include "DRAM.h"
 #include "Statistics.h"
+#include "MCCache.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
