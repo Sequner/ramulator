@@ -4,6 +4,10 @@
 #include "SpeedyController.h"
 #include "Memory.h"
 #include "DRAM.h"
+<<<<<<< HEAD
+#include "MCCache.h"
+=======
+>>>>>>> parent of a88ace7... checkpoint
 #include "Statistics.h"
 #include "MCCache.h"
 #include <cstdio>

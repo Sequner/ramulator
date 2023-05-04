@@ -315,12 +315,9 @@ public:
         Queue& queue = get_queue(req.type);
         if (queue.max == queue.size())
             return false;
-        // if (req.type == Request::Type::READ)
-	    //     cout << "Arrived " << req.addr << " at clk " << clk << " queue size " << queue.size() << "/" << queue.max << "\n";
-        req.arrive = clk;
-        queue.q.push_back(req);
-        return true;
-    }
+<<<<<<< HEAD
+<<<<<<< HEAD
+        }
 
     // enqueue for read and write
     // arrival clk and max size are checked at memory.h
@@ -332,11 +329,62 @@ public:
         // necessary for coherence
         if (req.type == Request::Type::READ && find_if(writeq.q.begin(), writeq.q.end(),
                 [req](Request& wreq){ return req.addr == wreq.addr;}) != writeq.q.end()){
-            req.depart = clk + 1;
-            pending.push_back(req);
-            readq.q.pop_back();
+                req.depart = clk + 1;
+                pending.push_back(req);
+                readq.q.pop_back();
+            }
+            return true;
         }
+        // if (req.type == Request::Type::READ)
+	    //     cout << "Arrived " << req.addr << " at clk " << clk << " queue size " << queue.size() << "/" << queue.max << "\n";
+        cache->send(req);
+        
+        
         return true;
+    }
+
+    void check_cache() {
+        auto it = cache->hit_list[channel->id].begin();
+
+        while (it != cache->hit_list[channel->id].end()) {
+            if (clk >= it->first) {
+                it->second.depart = it->first;
+                pending.push_back(it->second);
+
+                it = cache->hit_list[channel->id].erase(it);
+            } else {
+                ++it;
+            }
+        }
+
+        it = cache->ld_wait_list[channel->id].begin();
+        while (it != cache->ld_wait_list[channel->id].end()) {
+            if (clk >= it->first) {
+                Request req = it->second;
+                readq.q.push_back(req);
+                if (find_if(writeq.q.begin(), writeq.q.end(),
+=======
+
+=======
+
+>>>>>>> parent of a88ace7... checkpoint
+        req.arrive = clk;
+        queue.q.push_back(req);
+        // shortcut for read requests, if a write to same addr exists
+        // necessary for coherence
+        if (req.type == Request::Type::READ && find_if(writeq.q.begin(), writeq.q.end(),
+>>>>>>> parent of a88ace7... checkpoint
+                [req](Request& wreq){ return req.addr == wreq.addr;}) != writeq.q.end()){
+                    req.depart = clk + 1;
+                    pending.push_back(req);
+                    readq.q.pop_back();
+                }
+
+                it = cache->ld_wait_list[channel->id].erase(it);
+            } else {
+                ++it;
+            }
+        }
     }
 
     void tick()

@@ -338,28 +338,20 @@ public:
                     assert(false);
             }
         }
-    }
-
-    // ideally put everything to ctrls
-    bool send(Request req)
-    {
-        preprocess(&req);
-        // if other type of request, send2
-        if ((req.type != Request::Type::READ) && (req.type != Request::Type::WRITE)) {
-            if(ctrls[req.addr_vec[0]]->enqueue(req)) {
-                ++num_incoming_requests;
-                ++incoming_requests_per_channel[req.addr_vec[int(T::Level::Channel)]];
-                return true;
-            }
-            return false;
+<<<<<<< HEAD
+<<<<<<< HEAD
+        if (req.arrive >= 0) {      // write-back write, thus, shouldn't be considered to stats
+            return ctrls[req.addr_vec[0]]->enqueue(req);
         }
-        
-        Queue& queue = ctrls[req.addr_vec[0]].get_queue(req.type);
-        if (queue.max == queue.size())
-            return false;
-        int coreid = req.coreid;
-        ++num_incoming_requests;
-        if (req.type == Request::Type::READ) {
+=======
+>>>>>>> parent of a88ace7... checkpoint
+=======
+>>>>>>> parent of a88ace7... checkpoint
+
+        if(ctrls[req.addr_vec[0]]->enqueue(req)) {
+            // tally stats here to avoid double counting for requests that aren't enqueued
+            ++num_incoming_requests;
+            if (req.type == Request::Type::READ) {
               ++num_read_requests[coreid];
               ++incoming_read_reqs_per_channel[req.addr_vec[int(T::Level::Channel)]];
         }
@@ -386,6 +378,15 @@ public:
             preprocess(&req);
             req.arrive = num_dram_cycles;
         }
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of a88ace7... checkpoint
+=======
+
+>>>>>>> parent of a88ace7... checkpoint
+        return false;
     }
     
     void init_mapping_with_file(string filename){
