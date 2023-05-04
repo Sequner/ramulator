@@ -211,10 +211,6 @@ double Core::calc_ipc()
 void Core::tick()
 {
     clk++;
-    if (clk % 50000000 == 0) {
-      printf("Core %d is %d %d\n", id, more_reqs, window.is_empty());
-      window.print_list();
-    }
 
     if(first_level_cache != nullptr)
         first_level_cache->tick();
@@ -330,16 +326,6 @@ bool Window::is_empty()
 {
     return load == 0;
 }
-
-void Window::print_list()
-{
-  for (int i=0; i < addr_list.size(); i++) {
-    if (!ready_list[i]) {
-      printf("Addr %d\n", addr_list[i]);
-    }
-  }
-}
-
 
 void Window::insert(bool ready, long addr)
 {
