@@ -42,7 +42,9 @@ public:
   };
 
   MCCache(int size, int assoc, int block_size, int mshr_entry_num, int channel_num);
-
+  void helloworld() {
+    printf("helloworld");
+  }; 
   void tick();
 
   // Cache latency
@@ -90,6 +92,9 @@ public:
   // a write request to memory(L3) when dirty bit is on.
   void evict(std::list<Line>* lines,
       std::list<Line>::iterator victim);
+
+  // Allocate a cache line upon issuing read request through scheduler
+  void allocate_mshr(Request req);
 
   // First test whether need eviction, if so, do eviction by
   // calling evict function. Then allocate a new line and return
@@ -164,7 +169,7 @@ public:
   // set the instruction status to ready in processor's window.
   std::vector<std::list<std::pair<long, Request> > > hit_list;
 
-  std::function<bool(Request)> send_memory;
+  std::function<bool(Request)> send_memory = NULL;
 
   long clk = 0;
 

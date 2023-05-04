@@ -4,12 +4,8 @@
 #include "SpeedyController.h"
 #include "Memory.h"
 #include "DRAM.h"
-<<<<<<< HEAD
 #include "MCCache.h"
-=======
->>>>>>> parent of a88ace7... checkpoint
 #include "Statistics.h"
-#include "MCCache.h"
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
@@ -89,9 +85,15 @@ void run_cputrace(const Config& configs, Memory<T, Controller>& memory, const st
 {
     int cpu_tick = configs.get_cpu_tick();
     int mem_tick = configs.get_mem_tick();
-    auto send = bind(&Memory<T, Controller>::send, &memory, placeholders::_1);
+    std::function<bool(Request)> send = bind(&Memory<T, Controller>::send, &memory, placeholders::_1);
+    if (memory.ctrls[0]->cache != NULL) {
+      printf("With Cache\n");
+      memory.ctrls[0]->cache->send_memory = send;
+    }
+    else {
+      printf("Without Cache\n");
+    }
     Processor proc(configs, files, send, memory);
-
     long warmup_insts = configs.get_warmup_insts();
     bool is_warming_up = (warmup_insts != 0);
 
@@ -130,7 +132,6 @@ void run_cputrace(const Config& configs, Memory<T, Controller>& memory, const st
                                                  // the memory controller should be ticked mem_tick times
             proc.tick();
             Stats::curTick++; // processor clock, global, for Statistics
-
             if (configs.calc_weighted_speedup()) {
                 if (proc.has_reached_limit()) {
                     break;
@@ -163,11 +164,21 @@ void start_run(const Config& configs, T* spec, const vector<const char*>& files)
   spec->set_channel_number(C);
   spec->set_rank_number(R);
   std::vector<Controller<T>*> ctrls;
+  printf("MC Cache %d", configs.has_mc_cache());
+  int mccache_size = 1 << 23;
+  int mccache_assoc = 1 << 3;
+  int mccache_blocksz = 1 << 6;
+  int mshr_per_bank = 16;
+  MCCache mccache(mccache_size, mccache_assoc, mccache_blocksz, mshr_per_bank, C); // TODO: destroy
+
   for (int c = 0 ; c < C ; c++) {
     DRAM<T>* channel = new DRAM<T>(spec, T::Level::Channel);
     channel->id = c;
     channel->regStats("");
-    Controller<T>* ctrl = new Controller<T>(configs, channel);
+    Controller<T>* ctrl = new Controller<T>(configs, channel, NULL);
+    if (configs.has_mc_cache()) {
+      ctrl = new Controller<T>(configs, channel, &mccache);
+    }
     ctrls.push_back(ctrl);
   }
   Memory<T, Controller> memory(configs, ctrls);

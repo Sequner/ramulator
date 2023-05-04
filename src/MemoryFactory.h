@@ -7,6 +7,7 @@
 
 #include "Config.h"
 #include "Memory.h"
+#include "MCCache.h"
 
 #include "WideIO2.h"
 #include "SALP.h"
@@ -40,12 +41,18 @@ public:
         if (default_channels == 0) default_channels = channels;
         if (default_ranks == 0) default_ranks = ranks;
 
+        int mccache_size = 1 << 23;
+        int mccache_assoc = 1 << 3;
+        int mccache_blocksz = 1 << 6;
+        int mshr_per_bank = 16;
+        MCCache mccache(mccache_size, mccache_assoc, mccache_blocksz, mshr_per_bank, channels); // TODO: destroy
+
         vector<Controller<T> *> ctrls;
         for (int c = 0; c < channels; c++){
             DRAM<T>* channel = new DRAM<T>(spec, T::Level::Channel);
             channel->id = c;
             channel->regStats("");
-            ctrls.push_back(new Controller<T>(configs, channel));
+            ctrls.push_back(new Controller<T>(configs, channel, &mccache));
         }
         return new Memory<T>(configs, ctrls);
     }

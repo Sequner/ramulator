@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "MCCache.h"
 #include "Config.h"
 #include "DRAM.h"
 #include "Refresh.h"
@@ -69,6 +70,7 @@ public:
     /* Member Variables */
     long clk = 0;
     DRAM<T>* channel;
+    MCCache* cache;
 
     Scheduler<T>* scheduler;  // determines the highest priority request whose commands will be issued
     RowPolicy<T>* rowpolicy;  // determines the row-policy (e.g., closed-row vs. open-row)
@@ -77,7 +79,7 @@ public:
 
     struct Queue {
         list<Request> q;
-        unsigned int max = 64;
+        unsigned int max = 32;
         unsigned int size() {return q.size();}
     };
 
@@ -104,13 +106,14 @@ public:
     bool print_cmd_trace = false;
 
     /* Constructor */
-    Controller(const Config& configs, DRAM<T>* channel) :
+    Controller(const Config& configs, DRAM<T>* channel, MCCache* cache) :
         channel(channel),
         scheduler(new Scheduler<T>(this)),
         rowpolicy(new RowPolicy<T>(this)),
         rowtable(new RowTable<T>(this)),
         refresh(new Refresh<T>(this)),
-        cmd_trace_files(channel->children.size())
+        cmd_trace_files(channel->children.size()),
+        cache(cache)
     {
         record_cmd_trace = configs.record_cmd_trace();
         print_cmd_trace = configs.print_cmd_trace();
@@ -313,21 +316,24 @@ public:
     bool enqueue(Request& req)
     {
         Queue& queue = get_queue(req.type);
-        if (queue.max == queue.size())
+        if (queue.max == queue.size()) {
             return false;
-<<<<<<< HEAD
-<<<<<<< HEAD
         }
 
-    // enqueue for read and write
-    // arrival clk and max size are checked at memory.h
-    bool ioenqueue(Request& req)
-    {
-        Queue& queue = get_queue(req.type);
-        queue.q.push_back(req);
-        // shortcut for read requests, if a write to same addr exists
-        // necessary for coherence
-        if (req.type == Request::Type::READ && find_if(writeq.q.begin(), writeq.q.end(),
+        if (req.arrive >= 0) {
+            if (req.type != Request::Type::WRITE) {
+                printf("Type %s clk %d addr %d\n", req.type, req.arrive, req.addr);
+            }
+            assert(req.type == Request::Type::WRITE);
+            queue.q.push_back(req);
+        }
+        if (((req.type != Request::Type::READ) && (req.type != Request::Type::WRITE))
+            || cache == NULL) {
+            req.arrive = clk;
+            queue.q.push_back(req);
+            // shortcut for read requests, if a write to same addr exists
+            // necessary for coherence
+            if (req.type == Request::Type::READ && find_if(writeq.q.begin(), writeq.q.end(),
                 [req](Request& wreq){ return req.addr == wreq.addr;}) != writeq.q.end()){
                 req.depart = clk + 1;
                 pending.push_back(req);
@@ -338,7 +344,6 @@ public:
         // if (req.type == Request::Type::READ)
 	    //     cout << "Arrived " << req.addr << " at clk " << clk << " queue size " << queue.size() << "/" << queue.max << "\n";
         cache->send(req);
-        
         
         return true;
     }
@@ -363,23 +368,11 @@ public:
                 Request req = it->second;
                 readq.q.push_back(req);
                 if (find_if(writeq.q.begin(), writeq.q.end(),
-=======
-
-=======
-
->>>>>>> parent of a88ace7... checkpoint
-        req.arrive = clk;
-        queue.q.push_back(req);
-        // shortcut for read requests, if a write to same addr exists
-        // necessary for coherence
-        if (req.type == Request::Type::READ && find_if(writeq.q.begin(), writeq.q.end(),
->>>>>>> parent of a88ace7... checkpoint
                 [req](Request& wreq){ return req.addr == wreq.addr;}) != writeq.q.end()){
                     req.depart = clk + 1;
                     pending.push_back(req);
                     readq.q.pop_back();
                 }
-
                 it = cache->ld_wait_list[channel->id].erase(it);
             } else {
                 ++it;
@@ -390,6 +383,11 @@ public:
     void tick()
     {
         clk++;
+
+        if (cache != NULL) {
+            check_cache();
+        }
+
         req_queue_length_sum += readq.size() + writeq.size() + pending.size();
         read_req_queue_length_sum += readq.size() + pending.size();
         write_req_queue_length_sum += writeq.size();
@@ -517,6 +515,8 @@ public:
         if (req->type == Request::Type::READ) {
             req->depart = clk + channel->spec->read_latency;
             pending.push_back(*req);
+            if (cache != NULL)
+                cache->allocate_mshr(*req);
         }
 
         if (req->type == Request::Type::WRITE) {

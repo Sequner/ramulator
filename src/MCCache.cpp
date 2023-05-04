@@ -31,7 +31,6 @@ MCCache::MCCache(int size, int assoc, int block_size,
     for (int i = 0; i < channel_num; i++) {
         std::list<std::pair<long, Request>> mylist1, mylist2, mylist3;
         ld_wait_list.push_back(mylist1);
-        st_wait_list.push_back(mylist2);
         hit_list.push_back(mylist3);
     }
 
@@ -161,7 +160,8 @@ void MCCache::evict(std::list<Line>* lines,
     // LLC eviction
     if (dirty) {
         Request write_req(addr, Request::Type::WRITE);
-        st_wait_list[req.].push_back(make_pair(
+        write_req.arrive = clk;
+        st_wait_list.push_back(make_pair(
             clk + invalidate_time + latency,
             write_req));
 
@@ -172,6 +172,16 @@ void MCCache::evict(std::list<Line>* lines,
     }
 
     lines->erase(victim);
+}
+
+void MCCache::allocate_mshr (Request req) {
+    auto& lines = get_lines(req.addr);
+    std::list<Line>::iterator line;
+    auto newline = allocate_line(lines, req.addr, false, false);
+    if (newline == lines.end()) {
+        printf("Could allocate new cache line");
+        assert(false); // shouldn't happen
+    }
 }
 
 std::list<MCCache::Line>::iterator MCCache::allocate_line(
@@ -243,21 +253,8 @@ void MCCache::tick() {
     debug("clk %ld", clk);
 
     ++clk;
-
-    // Sends ready waiting request to memory
-    auto it = ld_wait_list.begin();
-    while (it != ld_wait_list.end() && clk >= it->first) {
-        if (!send_memory(it->second)) {
-            ++it;
-        } else {
-
-            debug("complete req: addr %lx", (it->second).addr);
-
-            it = ld_wait_list.erase(it);
-        }
-    }
-
-    it = st_wait_list.begin();
+    // send store
+    auto it = st_wait_list.begin();
     while (it != st_wait_list.end() && clk >= it->first) {
         if (!send_memory(it->second)) {
             ++it;
