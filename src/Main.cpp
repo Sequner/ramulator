@@ -87,7 +87,6 @@ void run_cputrace(const Config& configs, Memory<T, Controller>& memory, const st
     int mem_tick = configs.get_mem_tick();
     std::function<bool(Request)> send = bind(&Memory<T, Controller>::send, &memory, placeholders::_1);
     if (memory.ctrls[0]->cache != NULL) {
-      printf("With Cache\n");
       memory.ctrls[0]->cache->send_memory = send;
     }
     else {
@@ -164,9 +163,9 @@ void start_run(const Config& configs, T* spec, const vector<const char*>& files)
   spec->set_channel_number(C);
   spec->set_rank_number(R);
   std::vector<Controller<T>*> ctrls;
-  printf("MC Cache %d", configs.has_mc_cache());
+  printf("MC Cache %d\n", configs.has_mc_cache());
   int mccache_size = 1 << 23;
-  int mccache_assoc = 1 << 3;
+  int mccache_assoc = 1 << 4;
   int mccache_blocksz = 1 << 6;
   int mshr_per_bank = 16;
   MCCache mccache(mccache_size, mccache_assoc, mccache_blocksz, mshr_per_bank, C); // TODO: destroy

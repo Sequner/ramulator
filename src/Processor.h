@@ -46,6 +46,7 @@ public:
     void insert(bool ready, long addr);
     long retire();
     void set_ready(long addr, int mask);
+    void get_outstanding();
 
 private:
     int load = 0;

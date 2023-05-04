@@ -211,6 +211,8 @@ double Core::calc_ipc()
 void Core::tick()
 {
     clk++;
+    // if (clk % 500 == 0)
+    //   window.get_outstanding();
 
     if(first_level_cache != nullptr)
         first_level_cache->tick();
@@ -315,6 +317,15 @@ void Core::reset_stats() {
     clk = 0;
     retired = 0;
     cpu_inst = 0;
+}
+
+void Window::get_outstanding() {
+  for (int i=0; i < addr_list.size(); i++) {
+    if (!ready_list[i]) {
+      printf("OUT %d\n", addr_list[i]);
+    }
+  }
+  printf("\n");
 }
 
 bool Window::is_full()

@@ -332,7 +332,7 @@ public:
             }
         }
 
-        if (req.arrive >= 0) {      // write-back write, thus, shouldn't be considered to stats
+        if (req.arrive >= 0) {      // write-back write shouldn't be counted in stats
             return ctrls[req.addr_vec[0]]->enqueue(req);
         }
 

@@ -114,7 +114,8 @@ bool MCCache::send(Request req) {
         lines.push_back(Line(req.addr, get_tag(req.addr), false,
             line->dirty || (req.type == Request::Type::WRITE))); // LRU is used, so line is pushed back
         lines.erase(line);
-        req.depart = clk + latency;
+        hit_list[req.addr_vec[0]].push_back(make_pair(clk + latency, req));
+
         debug("hit, update timestamp %ld", clk);
         debug("hit finish time %ld", clk + latency);
 

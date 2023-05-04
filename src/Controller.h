@@ -104,6 +104,7 @@ public:
     bool record_cmd_trace = false;
     /* Commands to stdout */
     bool print_cmd_trace = false;
+    int min_latency = 1;
 
     /* Constructor */
     Controller(const Config& configs, DRAM<T>* channel, MCCache* cache) :
@@ -126,6 +127,8 @@ public:
             for (unsigned int i = 0; i < channel->children.size(); i++)
                 cmd_trace_files[i].open(prefix + to_string(i) + suffix);
         }
+        if (cache != NULL)
+            min_latency = cache->latency;
 
         // regStats
 
@@ -321,15 +324,20 @@ public:
         }
 
         if (req.arrive >= 0) {
+            printf("Write-back");
             if (req.type != Request::Type::WRITE) {
                 printf("Type %s clk %d addr %d\n", req.type, req.arrive, req.addr);
             }
             assert(req.type == Request::Type::WRITE);
             queue.q.push_back(req);
+            return true;
         }
+
+        req.arrive = clk;
         if (((req.type != Request::Type::READ) && (req.type != Request::Type::WRITE))
             || cache == NULL) {
-            req.arrive = clk;
+            // printf("Maintenance Routine\n");
+            
             queue.q.push_back(req);
             // shortcut for read requests, if a write to same addr exists
             // necessary for coherence
@@ -343,9 +351,7 @@ public:
         }
         // if (req.type == Request::Type::READ)
 	    //     cout << "Arrived " << req.addr << " at clk " << clk << " queue size " << queue.size() << "/" << queue.max << "\n";
-        cache->send(req);
-        
-        return true;
+        return cache->send(req);
     }
 
     void check_cache() {
@@ -396,7 +402,7 @@ public:
         if (pending.size()) {
             Request& req = pending[0];
             if (req.depart <= clk) {
-                if (req.depart - req.arrive > 1) { // this request really accessed a row
+                if (req.depart - req.arrive > min_latency) { // this request really accessed a row
                   read_latency_sum += req.depart - req.arrive;
                   channel->update_serving_requests(
                       req.addr_vec.data(), -1, clk);
