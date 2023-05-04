@@ -42,9 +42,7 @@ public:
   };
 
   MCCache(int size, int assoc, int block_size, int mshr_entry_num, int channel_num);
-  void helloworld() {
-    printf("helloworld");
-  }; 
+
   void tick();
 
   // Cache latency
